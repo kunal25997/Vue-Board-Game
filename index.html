@@ -1,0 +1,54 @@
+<!-- HTML structure for game -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Tic Tac Toe Game</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div id="game-vw">
+            <!--Info Messages-->
+            <div id="game-vw-info">
+                {{ infoMessage }}
+            </div>
+            <div id="game-vw-canvas">
+                <!--Values in canvas-->
+                <div
+                    v-for="(canvas, i) in canvas"
+                    v-on:click="activeGame.makeMove(i)"
+                    v-bind:class="{highlighted: canvas.isHighlighted }"
+                    class="game-vw-cn"
+                >
+                    {{ canvas.value }}
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue" charset="utf-8"></script>
+        <script src="js/game.js" charset="utf-8"></script>
+        <script src="js/canvas.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            let activeGame = new game();
+
+            let gameVue = new Vue({
+                el: '#game-vw',
+                data: activeGame,
+                computed: {
+                    infoMessage: function () {
+                        //If the game is in progress.
+                        if(this.inProgress){
+                            return 'It is ' + this.currentTurn + '\'s turn!'; 
+                        }
+                        //If it's a win.
+                        if(this.winner) {
+                            return this.winner + ' wins!';
+                        }
+                        //If it's a draw.
+                        if(!this.winner && !this.inProgress) {
+                            return 'It is a draw!';
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
